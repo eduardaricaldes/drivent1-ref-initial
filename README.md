@@ -1,4 +1,4 @@
-# drivent-back
+# drivent-back.
 
 Back-end for Driven.t, an event management solution.
 
@@ -21,6 +21,7 @@ npm i
 
 ```bash
 npm run migration:run
+npm run dev:migration:run
 ```
 
 6. Seed db
