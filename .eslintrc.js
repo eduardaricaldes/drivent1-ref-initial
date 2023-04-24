@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'import/no-unresolved': 'error',
     'import/order': 'warn',
+    'import/export': 0,
     'import/no-named-as-default-member': 'off',
     '@typescript-eslint/no-namespace': 'off',
     'import/newline-after-import': ['error'],
