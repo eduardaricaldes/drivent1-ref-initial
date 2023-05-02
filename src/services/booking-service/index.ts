@@ -32,8 +32,14 @@ async function createBooking(userId: number, roomId: number): Promise<BookingDon
   if (!room) {
     throw roomNotFoundError();
   }
-  const Enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
-  const ticket = await ticketRepository.findTicketByEnrollmentId(Enrollment.id);
+
+  if (room.capacity === 0) {
+    throw roomIsFullError();
+  }
+
+  const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+
+  const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
   if (ticket.TicketType.isRemote || ticket.status !== TicketStatus.PAID) {
     throw bookingRulesErros();
   }
