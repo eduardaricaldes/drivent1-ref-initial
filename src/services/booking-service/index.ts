@@ -40,7 +40,7 @@ async function createBooking(userId: number, roomId: number): Promise<BookingDon
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
 
   const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
-  if (ticket.TicketType.isRemote || ticket.status !== TicketStatus.PAID) {
+  if (ticket.TicketType.isRemote || ticket.status !== TicketStatus.PAID || !ticket.TicketType.includesHotel) {
     throw bookingRulesErros();
   }
   const booking = await bookingRepository.create(userId, roomId);

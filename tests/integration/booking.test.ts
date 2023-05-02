@@ -15,6 +15,7 @@ import {
   createRoomWithHotelId,
   createTicketTypeWithHotel,
   createTicketType,
+  createTicketWithNotIncludeHotel,
 } from '../factories';
 import bookingRepository from '@/repositories/booking-repository';
 import app, { init } from '@/app';
@@ -108,6 +109,21 @@ describe('POST /booking', () => {
     const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({ roomId: room.id });
     expect(response.status).toBe(httpStatus.FORBIDDEN);
   });
+
+  it('should return 403 when ticket is not include hotel', async () => {
+    const user = await createUser();
+    const token = await generateValidToken(user);
+    const hotel = await createHotel();
+    const room = await createRoomWithHotelIdWithZeroCapacity(hotel.id);
+    const enrolment = await createEnrollmentWithAddress(user);
+    const ticketWithNotIncludeHotel = await createTicketWithNotIncludeHotel();
+
+    await createTicket(enrolment.id, ticketWithNotIncludeHotel.id, TicketStatus.PAID);
+
+    const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({ roomId: room.id });
+    expect(response.status).toBe(httpStatus.FORBIDDEN);
+  });
+
   it('should return 403 when ticket is different to paid', async () => {
     const user = await createUser();
     const token = await generateValidToken(user);
