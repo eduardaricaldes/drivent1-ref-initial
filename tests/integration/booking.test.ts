@@ -169,8 +169,13 @@ describe('PUT /booking/:bookingId', () => {
     const token = await generateValidToken(user);
     const hotel = await createHotel();
     const room = await createRoomWithHotelIdWithZeroCapacity(hotel.id);
+    const booking = await createBooking(user.id);
+    await createBooking(user.id);
 
-    const response = await server.put('/booking/2').set('Authorization', `Bearer ${token}`).send({ roomId: room.id });
+    const response = await server
+      .put(`/booking/${booking.booking.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ roomId: room.id });
     expect(response.status).toBe(httpStatus.FORBIDDEN);
   });
   it('should return 403 when user hasnt booking', async () => {
