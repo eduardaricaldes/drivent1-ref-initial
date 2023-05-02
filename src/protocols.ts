@@ -45,3 +45,17 @@ export type PaymentParams = Omit<Payment, 'id' | 'createdAt' | 'updatedAt'>;
 export type InputTicketBody = {
   ticketTypeId: number;
 };
+
+export type BookingResponse = {
+  id: number;
+  Room: object;
+};
+
+export type BookingDoneResponse = {
+  bookingId: number;
+};
+export type ApplicationBookingError = {
+  name: string;
+  message: string;
+  status: number;
+};
